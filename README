@@ -2,5 +2,5 @@ Author:  Klas Kalaß
 Email:   klas.kalass@web.de
 License: GPL
 
-Very simple shell script to create a Scribus file that contains scaled-down images only. The images are scaled so that they are 300dpi in the final document.
-It reduces the file size of a generated PDF dramatically, I was able to scale down a 212 MB PDF to mere 41 MB this way.
+Very simple shell script to create a Scribus file that contains scaled-down images only. The images are scaled so that they are all the same resolution in the final document.
+It reduces the file size of a generated PDF dramatically, I was able to scale down a 212 MB PDF to mere 41 MB (300dpi) or 55 MB (360 dpi) this way.
