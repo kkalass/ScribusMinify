@@ -54,23 +54,6 @@ function getNewResolution {
 }
 
 #
-# minify the given image with the given old factor to the 
-# new standard factor
-#
-# $1 - img - the image to scale
-# $2 - oldScaleX - the old factor in X dimension
-# $3 - oldScaleY - the old factor in Y dimension
-# $4 - newname - the new image name
-function minifyImage {
-  local img="$1"
-  local oldScaleX=$2
-  local oldScaleY=$3
-  local newname=$4
-
-  echo convert -scale `getNewResolution "$img" $oldScaleX $oldScaleY` "$img" "$newname"
-}
-
-#
 # get the value of the specified attribute name 
 # $1 line
 # $2 attrname
@@ -103,10 +86,13 @@ function minify {
       local localY=`getAttribute "$line" LOCALY`
       local newlocalx=`scaleResolution $localX $scaleX 12`
       local newlocaly=`scaleResolution $localY $scaleY 12`
-      local newimagename="$TARGET_IMG_DIR/"`basename "$imgfile"`
-
+      local resString=`getNewResolution "$srcdirname/$imgfile" $scaleX $scaleY`
+      local newimagename="$TARGET_IMG_DIR/$resString-"`basename "$imgfile"`
+     
       echo "Scaling down $imgfile"
-      minifyImage "$srcdirname/$imgfile" $scaleX $scaleY "$targetdir/$newimagename"
+      
+      convert -scale "$resString" "$srcdirname/$imgfile" "$targetdir/$newimagename"
+
       echo $line | sed "s#LOCALSCX=\"[^\"]*\"#LOCALSCX=\"${TARGET_SCALE_FACTOR}\"#g;\
                         s#LOCALSCY=\"[^\"]*\"#LOCALSCY=\"${TARGET_SCALE_FACTOR}\"#g;\
                         s#LOCALX=\"[^\"]*\"#LOCALX=\"${newlocalx}\"#g;\
